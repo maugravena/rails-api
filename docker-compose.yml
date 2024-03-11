@@ -1,10 +1,10 @@
 services:
   api:
-    build: ./rails-api
+    build: .
     command: rails s -b 0.0.0.0
     container_name: onboarding
     volumes:
-      - ./rails-api:/opt/app
+      - .:/opt/app
     ports:
       - 3000:3000
     environment:
@@ -15,6 +15,8 @@ services:
     depends_on:
       - db
       - rabbitmq
+    networks:
+      - onboarding_net
   db:
     image: postgres:16-alpine
     environment:
@@ -22,6 +24,8 @@ services:
       - POSTGRES_PASSWORD=password
     volumes:
       - onboarding_data:/var/lib/postgressql/data
+    networks:
+      - onboarding_net
   rabbitmq:
     image: rabbitmq:3-management-alpine
     container_name: rabbitmq_onboarding
@@ -32,16 +36,11 @@ services:
     ports:
       - 5672:5672
       - 15672:15672
-  graphql:
-    build:
-      context: ./rails-graphql
-    volumes:
-     - ./rails-graphql:/opt/app
-    image: ruby:3.2.0
-    command: rails s -b 0.0.0.0
-    container_name: graphql
-    ports:
-      - 5000:5000
 
 volumes:
   onboarding_data:
+
+networks:
+  onboarding_net:
+    name: onboarding_net
+    external: true
