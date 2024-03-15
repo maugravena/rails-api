@@ -2,7 +2,7 @@ services:
   api:
     build: .
     command: rails s -b 0.0.0.0
-    container_name: onboarding
+    container_name: api
     volumes:
       - .:/opt/app
     ports:
@@ -11,10 +11,11 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_HOST=db
-      - MESSAGE_BROKER_URL=amqp://guest:guest@rabbitmq:5672
     depends_on:
-      - db
-      - rabbitmq
+      rabbitmq:
+        condition: service_healthy
+      db:
+        condition: service_healthy
     networks:
       - onboarding_net
   db:
@@ -26,9 +27,14 @@ services:
       - onboarding_data:/var/lib/postgressql/data
     networks:
       - onboarding_net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 3s
+      timeout: 3s
+      retries: 5
   rabbitmq:
     image: rabbitmq:3-management-alpine
-    container_name: rabbitmq_onboarding
+    container_name: rabbitmq
     hostname: rabbitmq
     environment:
       RABBITMQ_DEFAULT_USER: guest
@@ -36,6 +42,21 @@ services:
     ports:
       - 5672:5672
       - 15672:15672
+    networks:
+      - onboarding_net
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "await_startup"]
+      interval: 7s
+  sneakers:
+    build: .
+    container_name: sneakers
+    command: sneakers work CreatePolicyWorker --require app/workers/create_policy_worker.rb
+    depends_on:
+     - api
+    volumes:
+      - .:/opt/app
+    networks:
+      - onboarding_net
 
 volumes:
   onboarding_data:
