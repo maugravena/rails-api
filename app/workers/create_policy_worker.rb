@@ -4,7 +4,7 @@ require 'sneakers'
 class CreatePolicyWorker
   include Sneakers::Worker
 
-  from_queue 'minha.fila.teste'
+  from_queue 'create_policy'
 
   def work(msg)
     return ack! if msg.blank?
