@@ -8,6 +8,6 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 v = Vehicle.create(brand: 'Teste', year: '1995', license_plate: '000000', model: 'teste')
-i = Insured.create(name: 'teste', cpf:'00000000000')
+i = Insured.create(name: 'teste', cpf: '00000000000')
 
 Policy.create(emission_date: Date.today, end_date_coverage: Date.today, vehicle_id:v.id, insured_id: i.id)
