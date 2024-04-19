@@ -1,8 +1,16 @@
 class PoliciesController < ApplicationController
+  before_action :authenticate
+
+  def index
+    @policies = Policy.all
+
+    render json: @policies.map(&method(:complete_hash_policy)), status: :ok
+  end
+
   def show
     @policy = Policy.find(params[:policy_id])
 
-    render json: policy(@policy)
+    render json: complete_hash_policy(@policy)
   end
 
   def create
@@ -13,7 +21,7 @@ class PoliciesController < ApplicationController
 
   private
 
-  def policy(policy)
+  def complete_hash_policy(policy)
     {
       policy_id: policy.policy_id,
       emission_date: policy.emission_date,
