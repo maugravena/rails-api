@@ -14,7 +14,7 @@ curl --request GET \
 ```
 
 GET - com Authorization: Bearer token
-http://localhost:3000/policies/passando-policy_id-1234-2134-1234
+http://localhost:3333/policies/passando-policy_id-1234-2134-1234
 
 ```
 curl --request GET \
