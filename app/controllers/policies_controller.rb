@@ -8,7 +8,7 @@ class PoliciesController < ApplicationController
   end
 
   def show
-    @policy = Policy.find(params[:policy_id])
+    @policy = Policy.find(params[:id])
 
     render json: complete_hash_policy(@policy)
   end

@@ -7,5 +7,5 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
-  resources :policies, param: :policy_id, only: %i[show create index]
+  resources :policies, only: %i[show create index]
 end
