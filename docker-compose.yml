@@ -1,12 +1,12 @@
 services:
   api:
     build: .
-    command: rails s -b 0.0.0.0 -p 3000
+    command: rails s -b 0.0.0.0 -p 3333
     container_name: insurance_api
     volumes:
       - .:/opt/app
     ports:
-      - 3000:3000
+      - 3333:3333
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
