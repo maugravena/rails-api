@@ -33,7 +33,8 @@ class PoliciesController < ApplicationController
       vehicle: {
         brand: policy.vehicle.brand,
         model: policy.vehicle.model,
-        year: policy.vehicle.license_plate
+        year: policy.vehicle.year,
+        license_plate: policy.vehicle.license_plate
       }
     }
   end

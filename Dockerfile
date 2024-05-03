@@ -1,6 +1,6 @@
 FROM ruby:3.2.0-alpine
 
-RUN apk add --no-cache build-base libpq-dev tzdata
+RUN apk add --no-cache build-base libpq-dev tzdata curl
 
 ENV INSTALL_PATH /opt/app
 
