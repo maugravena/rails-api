@@ -1,5 +1,5 @@
 services:
-  api: &api
+  api:
     build: .
     command: rails s -b 0.0.0.0 -p 3333
     container_name: insurance_api
@@ -24,14 +24,18 @@ services:
       timeout: 5s
       retries: 5
   sneakers:
-    <<: *api
+    build: .
     container_name: sneakers
+    volumes:
+      - .:/opt/app
     command: sh -c "sneakers work CreatePolicyWorker --require app/workers/create_policy_worker.rb"
     depends_on:
       api:
         condition: service_healthy
     ports:
       - 4444:4444
+    networks:
+      - onboarding_net
   db:
     image: postgres:16-alpine
     environment:
