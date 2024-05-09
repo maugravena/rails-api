@@ -18,24 +18,18 @@ services:
         condition: service_healthy
     networks:
       - onboarding_net
-    healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:3333/up || exit 1"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
   sneakers:
     build: .
     container_name: sneakers
     volumes:
       - .:/opt/app
-    command: sh -c "sneakers work CreatePolicyWorker --require app/workers/create_policy_worker.rb"
+    command: sneakers work CreatePolicyWorker --require app/workers/create_policy_worker.rb
     depends_on:
-      api:
-        condition: service_healthy
-    ports:
-      - 4444:4444
+      - api
     networks:
       - onboarding_net
+    entrypoint: ./sneakers-entrypoint.sh
+
   db:
     image: postgres:16-alpine
     environment:
