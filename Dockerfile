@@ -1,6 +1,6 @@
 FROM ruby:3.2.0-alpine
 
-RUN apk add --no-cache build-base libpq-dev tzdata
+RUN apk add --no-cache build-base libpq-dev tzdata curl
 
 ENV INSTALL_PATH /opt/app
 
@@ -21,4 +21,4 @@ ENTRYPOINT ["entrypoint.sh"]
 
 EXPOSE 3333
 
-CMD ["rails", "server", "-b", "0.0.0.0"]
+CMD ["rails", "server", "-b", "0.0.0.0", "-p", "3333"]
